@@ -62,7 +62,7 @@ bunx e2e run --no-cache
 ## How a replay works
 
 1. Check the starting screen: the same route, whatever the record id or the
-   fragment. Retries run live, except under `--strict-cache`.
+   fragment. Retries run live, except under `--strict-cache` or `cache.strict`.
 2. Find each recorded control and repeat its action. The runner matches
    controls by their role, name, test id, and surrounding context. It waits
    for missing controls and stops if a match is ambiguous. A control with no
@@ -195,7 +195,7 @@ such as an `afterEach` assertion.
 | Reason | What happened | What to do |
 | --- | --- | --- |
 | `no-entry` | No recording matches this step and its params. | The next verified pass records it. |
-| `retry` | Retries never replay, except under `--strict-cache`. | Nothing. |
+| `retry` | Retries never replay, except under `--strict-cache` or `cache.strict`. | Nothing. |
 | `invalid-entry` | The file is unreadable, over 1 MiB, or from another schema version. | `npx e2e cache clear`. |
 | `truncated` | The recording hit a limit, see [below](#limits-and-gaps). | Split the step, or pass the secret as a `Secret`. |
 | `wrong-context` | The app was on another screen than when the step was recorded: a different origin, path, or query, not a different record id or fragment. | Open the same screen before the step. |
