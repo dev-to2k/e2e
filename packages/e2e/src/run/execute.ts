@@ -1157,7 +1157,7 @@ export class TargetExecutor implements SerialHost {
       // closed its soft failures; they are settled here so teardown starts
       // with the collection closed either way, and a soft matcher in a hook
       // throws. A soft failure is sticky: it fails an attempt that then
-      // skipped, and noted beside a timeout or interrupt.
+      // skipped, and sits beside a timeout or interrupt that came first.
       const lateSoft = soft.close();
       if (lateSoft !== undefined) {
         recordFailure(lateSoft, 'body');
