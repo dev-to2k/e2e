@@ -103,8 +103,9 @@ are reported as `filtered`, and a CI run fails with `ONLY_IN_CI`.
 
 Call `test.skip(condition, reason)` inside a test for conditions you learn at
 runtime, such as a disabled feature flag. When the condition is true, the call
-throws: the body stops at that line, as Playwright's does, and the test is
-reported `skipped` with `reason`, with no retry. Nothing after the call runs.
+throws: the body stops at that line, as Playwright's does. Nothing after the
+call runs. With no failure before it, the test is reported `skipped` with
+`reason`, with no retry.
 Steps before it stay in the report as they ran. A failed `expect.soft` before
 the call still fails the attempt, as in Playwright: the attempt is `failed`
 with the soft failures as its error and the skip reason in its `skip`, and it

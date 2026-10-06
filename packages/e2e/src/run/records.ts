@@ -103,7 +103,11 @@ export interface SerialMemberRecord {
   error?: SerializedError;
   /** What the runner saw when this member's failure landed; see `FailureEvidence`. */
   failure?: FailureEvidence;
-  /** Why the member skipped itself; see `AttemptRecord.skip`. */
+  /**
+   * Why the member was skipped: its own `test.skip`, or the runner (a failed
+   * predecessor or hook, an interrupt). Also on a failed member that skipped
+   * itself first; see `AttemptRecord.skip`.
+   */
   skip?: SkipInfo;
   secondaryErrors: SerializedError[];
 }
