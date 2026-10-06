@@ -277,8 +277,9 @@ matches. Misses and hand-offs use the model; `agent.assert`,
   and evict nothing.
 - With committed recordings, `--strict-cache` in CI fails a recording that
   no longer replays with `REPLAY_STALE` instead of quietly spending model
-  calls every run; re-record locally and commit. Unrecorded steps still run
-  live.
+  calls every run; re-record locally without it and commit. Unrecorded
+  steps still run live; retries replay too, and a strict run never writes
+  the cache.
 
 ## Inspect what the model did
 
