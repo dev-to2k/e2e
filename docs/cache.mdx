@@ -328,7 +328,9 @@ params), a `gap`, and a `truncated` recording still run live. A retry
 replays like the first attempt. `REPLAY_STALE` exits 2 and is not retried.
 
 A strict run never writes or deletes an entry, even in `read-write` mode:
-nothing it runs live is recorded, and a failure evicts nothing. A stale
+nothing it runs live is recorded, and a failure evicts nothing. A new step
+records only on a run without strict, so prefer `--strict-cache` in CI over
+`cache.strict` in the config. A stale
 entry stays where it is, so every strict run fails on it until it is
 re-recorded: run the test in `read-write` mode without the flag, and with
 `cache.strict` off when the config set it, then commit the changed entry; a

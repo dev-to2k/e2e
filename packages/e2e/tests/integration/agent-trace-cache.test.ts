@@ -632,7 +632,7 @@ describe('trace cache: --strict-cache never writes the cache', () => {
   }, 180_000);
 });
 
-const PIN_SUITE =`import { test, expect } from 'e2e';
+const PIN_SUITE = `import { test, expect } from 'e2e';
 
 test('picks the red pin', async ({ app, agent, screen }) => {
   await app.open('/canvas');
