@@ -597,6 +597,7 @@ describe('trace cache: --strict-cache never writes the cache', () => {
       const recording = await runExisting(project, options({ calls: 0, prefixes: [] }, false));
       expect(recording.exitCode).toBe(0);
       const recorded = entryFileState(project);
+      const entry = path.basename(readOnlyEntry(project).file, '.json');
 
       writeFileSync(path.join(project.dir, 'fail-once'), '', 'utf8');
       const strict: ExecutorRecord = { calls: 0, prefixes: [] };
@@ -610,6 +611,7 @@ describe('trace cache: --strict-cache never writes the cache', () => {
           mode: 'self-finalized',
           replayedActions: 2,
           totalActions: 2,
+          entry,
         });
       }
       expect(entryFileState(project)).toEqual(recorded);
