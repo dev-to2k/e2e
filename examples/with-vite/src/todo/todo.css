@@ -1,0 +1,8 @@
+.todo { max-width: 480px; margin: 48px auto; padding: 24px; background: #fff; color: #111; border-radius: 12px; font-family: system-ui, sans-serif; }
+.todo > input { width: 100%; padding: 10px; box-sizing: border-box; }
+.todo .filters { display: flex; gap: 8px; margin: 12px 0; }
+.todo .filters button[aria-pressed='true'] { font-weight: 700; text-decoration: underline; }
+.todo ul { list-style: none; padding: 0; }
+.todo li { display: flex; align-items: center; gap: 8px; padding: 6px 0; }
+.todo li span { flex: 1; }
+.todo li.done span { text-decoration: line-through; color: #888; }

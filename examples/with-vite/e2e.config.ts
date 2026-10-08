@@ -1,13 +1,18 @@
 import type { E2EConfig } from 'e2e';
 import { web } from '@e2e-dev/web';
-import { gateway } from 'ai';
+import { google } from '@ai-sdk/google';
+import { anthropic } from '@ai-sdk/anthropic';
 
 export default {
   // The Vercel AI Gateway serves the model and reads AI_GATEWAY_API_KEY.
   // Only tests that use `agent` need it; tests/greeting.e2e.ts runs without one.
   agents: {
     default: {
-      model: gateway('openai/gpt-6-luna-fast'),
+      model: google('gemini-3.8-flash'),
+      system: 'You are a thorough QA agent. Verify every outcome.',
+    },
+    claude: {
+      model: anthropic('claude-sonnet-5-5'),
       system: 'You are a thorough QA agent. Verify every outcome.',
     },
   },

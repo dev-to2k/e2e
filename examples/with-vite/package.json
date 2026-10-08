@@ -6,7 +6,8 @@
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
-    "test:e2e": "e2e run"
+    "test:e2e": "e2e run",
+    "test:todo": "node --env-file-if-exists=.env node_modules/e2e/dist/cli/bin.js run tests/todo-agent.e2e.ts"
   },
   "dependencies": {
     "@fontsource/dm-mono": "^5.3.0",
@@ -16,13 +17,15 @@
     "react-dom": "^19.3.0"
   },
   "devDependencies": {
+    "@ai-sdk/anthropic": "^4.0.75",
+    "@ai-sdk/google": "^4.0.91",
     "@e2e-dev/web": "^0.11.1",
     "@types/node": "^26.6.4",
     "@types/react": "^19.1.4",
     "@types/react-dom": "^19.1.4",
     "@vitejs/plugin-react": "^6.1.1",
     "ai": "^7.0.0",
-    "e2e": "^0.15.2",
+    "e2e": "^0.18.0",
     "playwright": "^1.63.0",
     "typescript": "^7.0.2",
     "vite": "^8.3.2",
