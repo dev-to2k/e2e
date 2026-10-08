@@ -1,46 +1,54 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { KeyboardEvent } from 'react'
 
-type Todo = { id: number; title: string; done: boolean }
+type Todo = { id: string; title: string; completed: boolean }
 type Filter = 'all' | 'active' | 'completed'
 
-const STORAGE_KEY = 'todos'
 const FILTERS: Filter[] = ['all', 'active', 'completed']
+const API = '/api/todos'
 
-function loadTodos(): Todo[] {
-  const raw = localStorage.getItem(STORAGE_KEY)
-  return raw ? JSON.parse(raw) : []
-}
-
-function saveTodos(todos: Todo[]) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(todos))
+async function request<T>(path: string, init?: RequestInit): Promise<T> {
+  const response = await fetch(path, {
+    ...init,
+    headers: { 'content-type': 'application/json' },
+  })
+  if (!response.ok) throw new Error(`${init?.method ?? 'GET'} ${path} failed: ${response.status}`)
+  return response.json() as Promise<T>
 }
 
 export function TodoApp() {
-  const [todos, setTodos] = useState<Todo[]>(loadTodos)
+  const [todos, setTodos] = useState<Todo[]>([])
   const [draft, setDraft] = useState('')
   const [filter, setFilter] = useState<Filter>('all')
-  const [editingId, setEditingId] = useState<number | null>(null)
+  const [editingId, setEditingId] = useState<string | null>(null)
   const [editDraft, setEditDraft] = useState('')
 
-  function update(next: Todo[]) {
-    setTodos(next)
-    saveTodos(next)
-  }
+  useEffect(() => {
+    request<Todo[]>(API).then(setTodos).catch(console.error)
+  }, [])
 
-  function addTodo() {
+  async function addTodo() {
     const title = draft.trim()
     if (!title) return
-    update([...todos, { id: Date.now(), title, done: false }])
     setDraft('')
+    const created = await request<Todo>(API, {
+      method: 'POST',
+      body: JSON.stringify({ title, completed: false }),
+    })
+    setTodos((current) => [...current, created])
   }
 
-  function toggleTodo(id: number) {
-    update(todos.map((todo) => (todo.id === id ? { ...todo, done: !todo.done } : todo)))
+  async function toggleTodo(todo: Todo) {
+    const updated = await request<Todo>(`${API}/${todo.id}`, {
+      method: 'PATCH',
+      body: JSON.stringify({ completed: !todo.completed }),
+    })
+    setTodos((current) => current.map((item) => (item.id === todo.id ? updated : item)))
   }
 
-  function deleteTodo(id: number) {
-    update(todos.filter((todo) => todo.id !== id))
+  async function deleteTodo(id: string) {
+    await request<Todo>(`${API}/${id}`, { method: 'DELETE' })
+    setTodos((current) => current.filter((todo) => todo.id !== id))
   }
 
   function startEdit(todo: Todo) {
@@ -48,12 +56,16 @@ export function TodoApp() {
     setEditDraft(todo.title)
   }
 
-  function commitEdit() {
+  async function commitEdit() {
+    const id = editingId
     const title = editDraft.trim()
-    if (title) {
-      update(todos.map((todo) => (todo.id === editingId ? { ...todo, title } : todo)))
-    }
     setEditingId(null)
+    if (!id || !title) return
+    const updated = await request<Todo>(`${API}/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify({ title }),
+    })
+    setTodos((current) => current.map((todo) => (todo.id === id ? updated : todo)))
   }
 
   function onEditKeyDown(e: KeyboardEvent<HTMLInputElement>) {
@@ -62,11 +74,11 @@ export function TodoApp() {
   }
 
   const visibleTodos = todos.filter((todo) => {
-    if (filter === 'active') return !todo.done
-    if (filter === 'completed') return todo.done
+    if (filter === 'active') return !todo.completed
+    if (filter === 'completed') return todo.completed
     return true
   })
-  const remaining = todos.filter((todo) => !todo.done).length
+  const remaining = todos.filter((todo) => !todo.completed).length
 
   return (
     <main className="todo">
@@ -88,12 +100,12 @@ export function TodoApp() {
       {visibleTodos.length === 0 && <p role="status">No todos</p>}
       <ul>
         {visibleTodos.map((todo) => (
-          <li key={todo.id} className={todo.done ? 'done' : ''}>
+          <li key={todo.id} className={todo.completed ? 'done' : ''}>
             <input
               type="checkbox"
               aria-label={`Complete ${todo.title}`}
-              checked={todo.done}
-              onChange={() => toggleTodo(todo.id)}
+              checked={todo.completed}
+              onChange={() => toggleTodo(todo)}
             />
             {editingId === todo.id ? (
               <input

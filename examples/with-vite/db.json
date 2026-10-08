@@ -1,0 +1,10 @@
+{
+  "todos": [
+    {
+      "title": "Mua sữa",
+      "completed": true,
+      "id": "G6_aSfOqqfE"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}

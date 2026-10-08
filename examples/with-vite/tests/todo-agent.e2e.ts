@@ -1,5 +1,13 @@
 import { test } from '@e2e-dev/web';
 
+const API = process.env.API_URL ?? 'http://localhost:3001';
+
+// The todo list lives in json-server (`npm run api`); start every test empty.
+test.beforeEach(async () => {
+  const todos = (await (await fetch(new URL('/todos', API))).json()) as { id: string }[];
+  await Promise.all(todos.map((t) => fetch(new URL(`/todos/${t.id}`, API), { method: 'DELETE' })));
+});
+
 test('TC-01: thêm todo mới', async ({ app, agent }) => {
   await app.open('/todo.html');
   await agent.assert('Danh sách todo đang trống');
@@ -16,7 +24,7 @@ test('TC-02: đánh dấu hoàn thành', async ({ app, agent }) => {
 
   await agent.act('Đánh dấu todo "Học bài" là đã hoàn thành');
 
-  await agent.assert('Todo "Học bài" đã được tick và hiển thị gạch ngang');
+  await agent.assert('Todo "Học bài" đã được tick (checkbox ở trạng thái checked)');
   await agent.assert('Hiển thị "0 items left"');
 });
 

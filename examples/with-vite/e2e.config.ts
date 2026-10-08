@@ -28,7 +28,7 @@ export default {
       system: 'You are a thorough QA agent. Verify every outcome.',
     },
     grok: {
-      model: grok('grok-4'),
+      model: grok('grok-4.6'),
       system: 'You are a thorough QA agent. Verify every outcome.',
     },
     claude: {
