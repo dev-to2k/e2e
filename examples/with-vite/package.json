@@ -7,7 +7,10 @@
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
     "test:e2e": "e2e run",
-    "test:todo": "node --env-file-if-exists=.env node_modules/e2e/dist/cli/bin.js run tests/todo-agent.e2e.ts"
+    "test:todo": "node --env-file-if-exists=.env node_modules/e2e/dist/cli/bin.js run tests/todo-agent.e2e.ts",
+    "test:todo:grok": "node --env-file-if-exists=.env node_modules/e2e/dist/cli/bin.js run tests/todo-agent.e2e.ts --agent grok",
+    "test:todo:claude": "node --env-file-if-exists=.env node_modules/e2e/dist/cli/bin.js run tests/todo-agent.e2e.ts --agent claude",
+    "test:todo:opencode": "node --env-file-if-exists=.env node_modules/e2e/dist/cli/bin.js run tests/todo-agent.e2e.ts --agent opencode"
   },
   "dependencies": {
     "@fontsource/dm-mono": "^5.3.0",
@@ -19,6 +22,8 @@
   "devDependencies": {
     "@ai-sdk/anthropic": "^4.0.75",
     "@ai-sdk/google": "^4.0.91",
+    "@ai-sdk/openai-compatible": "^3.0.65",
+    "@ai-sdk/xai": "^5.0.18",
     "@e2e-dev/web": "^0.11.1",
     "@types/node": "^26.6.4",
     "@types/react": "^19.1.4",

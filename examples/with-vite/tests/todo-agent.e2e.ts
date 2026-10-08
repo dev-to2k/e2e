@@ -1,6 +1,6 @@
 import { test } from '@e2e-dev/web';
 
-test('TC-01: thêm todo mới', { agent: 'claude' }, async ({ app, agent }) => {
+test('TC-01: thêm todo mới', async ({ app, agent }) => {
   await app.open('/todo.html');
   await agent.assert('Danh sách todo đang trống');
 
@@ -10,7 +10,7 @@ test('TC-01: thêm todo mới', { agent: 'claude' }, async ({ app, agent }) => {
   await agent.assert('Hiển thị "1 items left"');
 });
 
-test('TC-02: đánh dấu hoàn thành', { agent: 'claude' }, async ({ app, agent }) => {
+test('TC-02: đánh dấu hoàn thành', async ({ app, agent }) => {
   await app.open('/todo.html');
   await agent.act('Thêm todo "Học bài"');
 
@@ -20,7 +20,7 @@ test('TC-02: đánh dấu hoàn thành', { agent: 'claude' }, async ({ app, agen
   await agent.assert('Hiển thị "0 items left"');
 });
 
-test('TC-03: sửa todo', { agent: 'claude' }, async ({ app, agent }) => {
+test('TC-03: sửa todo', async ({ app, agent }) => {
   await app.open('/todo.html');
   await agent.act('Thêm todo "Mua sữa"');
 
@@ -29,7 +29,7 @@ test('TC-03: sửa todo', { agent: 'claude' }, async ({ app, agent }) => {
   await agent.assert('Danh sách chỉ có item "Mua bánh mì" và không còn item "Mua sữa"');
 });
 
-test('TC-04: hủy sửa bằng Escape', { agent: 'claude' }, async ({ app, agent }) => {
+test('TC-04: hủy sửa bằng Escape', async ({ app, agent }) => {
   await app.open('/todo.html');
   await agent.act('Thêm todo "Mua sữa"');
 
@@ -38,7 +38,7 @@ test('TC-04: hủy sửa bằng Escape', { agent: 'claude' }, async ({ app, agen
   await agent.assert('Danh sách vẫn là "Mua sữa", không có "Nội dung khác"');
 });
 
-test('TC-05: xóa todo', { agent: 'claude' }, async ({ app, agent }) => {
+test('TC-05: xóa todo', async ({ app, agent }) => {
   await app.open('/todo.html');
   await agent.act('Thêm todo "Mua sữa"');
 
@@ -47,7 +47,7 @@ test('TC-05: xóa todo', { agent: 'claude' }, async ({ app, agent }) => {
   await agent.assert('Danh sách trống và hiển thị thông báo "No todos"');
 });
 
-test('TC-06: không thêm todo rỗng', { agent: 'claude' }, async ({ app, agent }) => {
+test('TC-06: không thêm todo rỗng', async ({ app, agent }) => {
   await app.open('/todo.html');
 
   await agent.act('Nhấn Enter khi ô nhập todo đang trống');
@@ -56,7 +56,7 @@ test('TC-06: không thêm todo rỗng', { agent: 'claude' }, async ({ app, agent
   await agent.assert('Danh sách vẫn trống');
 });
 
-test('TC-07: lọc todo theo trạng thái', { agent: 'claude' }, async ({ app, agent }) => {
+test('TC-07: lọc todo theo trạng thái', async ({ app, agent }) => {
   await app.open('/todo.html');
   await agent.act('Thêm hai todo "Việc A" và "Việc B"');
   await agent.act('Đánh dấu "Việc A" là đã hoàn thành');
@@ -71,7 +71,7 @@ test('TC-07: lọc todo theo trạng thái', { agent: 'claude' }, async ({ app, 
   await agent.assert('Hiển thị cả "Việc A" và "Việc B"');
 });
 
-test('TC-08: giữ todo sau khi reload', { agent: 'claude' }, async ({ app, agent }) => {
+test('TC-08: giữ todo sau khi reload', async ({ app, agent }) => {
   await app.open('/todo.html');
   await agent.act('Thêm todo "Mua sữa" và đánh dấu hoàn thành');
 
